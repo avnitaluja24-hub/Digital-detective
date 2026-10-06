@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Detective | Cyber Forensics Mystery</title>
+  <!-- Google Fonts for sleek cyber-sleuth typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Cyber background grid effect -->
+  <div class="bg-grid-overlay"></div>
+
+  <!-- Main Container -->
+  <div class="app-container">
+
+    <!-- Top Navigation & Header Bar -->
+    <header class="detective-header">
+      <div class="brand-section">
+        <div class="badge-terminal">
+          <span class="status-dot"></span> SEC-OPS FORENSICS
+        </div>
+        <h1 class="app-title">Digital Detective <span class="title-accent">OS</span></h1>
+      </div>
+
+      <div class="case-meta-bar">
+        <div class="meta-item">
+          <span class="meta-label">CURRENT CASE:</span>
+          <span class="meta-val highlight" id="case-id-display">CASE-204</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">CLUES EXAMINED:</span>
+          <span class="meta-val" id="clue-tracker">0 / 6</span>
+        </div>
+        <button class="status-pill status-btn" id="case-status-badge" onclick="openStatusModal()" title="Click to view Case Status & Progress HUD">
+          <span class="pulse-dot"></span> <span id="status-badge-text">INVESTIGATION ACTIVE</span>
+        </button>
+        <button class="btn btn-secondary btn-sm" id="open-tutorial-btn" onclick="openTutorial()">
+          🎓 Guided Tutorial
+        </button>
+      </div>
+    </header>
+
+    <!-- Navigation Bar between sections -->
+    <nav class="nav-tabs" aria-label="Investigation Sections">
+      <button class="nav-tab active" data-tab="dossier-tab">
+        <span class="tab-icon">📁</span> Case Dossier
+      </button>
+      <button class="nav-tab" data-tab="evidence-tab">
+        <span class="tab-icon">🔍</span> Evidence & Chats (<span id="evidence-count">6</span>)
+      </button>
+      <button class="nav-tab" data-tab="suspects-tab">
+        <span class="tab-icon">👥</span> Suspects (3)
+      </button>
+      <button class="nav-tab accuse-tab-btn" data-tab="accuse-tab">
+        <span class="tab-icon">⚖️</span> Make Accusation
+      </button>
+    </nav>
+
+    <!-- MAIN VIEWS CONTAINER -->
+    <main class="content-view">
+
+      <!-- ================= SECTION 1: CASE DOSSIER ================= -->
+      <section id="dossier-tab" class="tab-content active-content">
+        <div class="dossier-grid">
+          
+          <!-- Incident Overview Card -->
+          <div class="card dossier-main-card">
+            <div class="card-header">
+              <span class="tag-pill tag-red">INCIDENT REPORT</span>
+              <span class="timestamp" id="incident-timestamp">OCTOBER 14 // 02:42 AM</span>
+            </div>
+            <h2 class="case-headline" id="case-title">Operation Ghost Query</h2>
+            <p class="case-subtitle" id="case-subtitle">The Midnight Database Exfiltration</p>
+            
+            <div class="dossier-body">
+              <h3 class="section-heading">Incident Summary</h3>
+              <p id="case-summary-text" class="text-lead"></p>
+
+              <div class="intel-box-grid">
+                <div class="intel-box">
+                  <span class="intel-label">Target Asset:</span>
+                  <span class="intel-value" id="case-target-asset"></span>
+                </div>
+                <div class="intel-box">
+                  <span class="intel-label">Compromised Point:</span>
+                  <span class="intel-value" id="case-location"></span>
+                </div>
+                <div class="intel-box">
+                  <span class="intel-label">Difficulty:</span>
+                  <span class="intel-value highlight-cyan" id="case-difficulty"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="detective-memo">
+              <div class="memo-badge">DIRECTIVE FOR THE DETECTIVE:</div>
+              <p id="case-detective-notes"></p>
+            </div>
+
+            <div class="dossier-action-row">
+              <button class="btn btn-primary" onclick="switchTab('evidence-tab')">
+                Inspect Evidence & Transcripts →
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Investigation Status Card -->
+          <div class="card dossier-sidebar-card">
+            <div class="card-header">
+              <span class="tag-pill tag-cyan">DETECTIVE CHECKLIST</span>
+            </div>
+            
+            <div class="progress-container">
+              <div class="progress-info">
+                <span>Forensic Progress</span>
+                <span id="progress-percent-label">0%</span>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="progress-bar-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <ul class="checklist-items" id="checklist-container">
+              <!-- Dynamically populated checklist -->
+            </ul>
+
+            <div class="cyber-tip-box">
+              <span class="tip-icon">💡</span>
+              <p class="tip-text">Click on any clue card in the Evidence tab to decrypt and examine its forensic breakdown.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= SECTION 2: EVIDENCE & CHATS ================= -->
+      <section id="evidence-tab" class="tab-content">
+        <div class="section-title-bar">
+          <div>
+            <h2 class="section-title">Forensic Clues & Transcripts</h2>
+            <p class="section-desc">Click any evidence file to open the interactive forensic terminal and inspect raw logs, chat transcripts, and hardware telemetry.</p>
+          </div>
+          <div class="filter-pills">
+            <button class="filter-btn active" data-filter="all">All (6)</button>
+            <button class="filter-btn" data-filter="chat">Chat Logs</button>
+            <button class="filter-btn" data-filter="log">System Logs</button>
+            <button class="filter-btn" data-filter="alibi">Alibis</button>
+          </div>
+        </div>
+
+        <!-- Evidence Cards Grid -->
+        <div class="evidence-grid" id="evidence-container">
+          <!-- Populated by app.js -->
+        </div>
+      </section>
+
+      <!-- ================= SECTION 3: SUSPECTS ================= -->
+      <section id="suspects-tab" class="tab-content">
+        <div class="section-title-bar">
+          <div>
+            <h2 class="section-title">Persons of Interest</h2>
+            <p class="section-desc">Analyze each suspect's access role, stated motive, and digital alibi against the uncovered evidence.</p>
+          </div>
+        </div>
+
+        <div class="suspects-grid" id="suspects-container">
+          <!-- Populated by app.js -->
+        </div>
+      </section>
+
+      <!-- ================= SECTION 4: MAKE ACCUSATION ================= -->
+      <section id="accuse-tab" class="tab-content">
+        <div class="accuse-wrapper">
+          <div class="card accuse-card">
+            <div class="card-header text-center">
+              <span class="tag-pill tag-amber">FINAL VERDICT TRIBUNAL</span>
+            </div>
+            
+            <h2 class="accuse-title">Who Committed the Breach?</h2>
+            <p class="accuse-subtitle">Select the individual responsible for the exfiltration. Review your evidence before locking in your final deduction.</p>
+
+            <!-- Suspect Selector Radio Cards -->
+            <div class="accuse-select-list" id="accuse-suspect-choices">
+              <!-- Populated by app.js -->
+            </div>
+
+            <!-- Accusation Button -->
+            <div class="accuse-submit-box">
+              <button class="btn btn-danger btn-large" id="submit-verdict-btn" disabled>
+                🔒 Select a Suspect to Deliver Verdict
+              </button>
+              <p class="warning-caption">Your decision will test your evidence analysis. You can re-examine clues if you are unsure.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <span>Digital Detective OS • Client-Side Cyber Sleuth Simulator</span>
+      <span>Apex Financial Cyber Forensics Division</span>
+    </footer>
+
+  </div>
+
+  <!-- ================= MODAL: CLUE FORENSIC INSPECTOR ================= -->
+  <div class="modal-backdrop" id="clue-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-badge-row">
+          <span class="tag-pill tag-cyan" id="modal-clue-badge">EVIDENCE</span>
+          <span class="modal-clue-id" id="modal-clue-id">CLUE-01</span>
+        </div>
+        <button class="modal-close-btn" id="modal-close-btn" aria-label="Close modal">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <h3 class="modal-title" id="modal-clue-title">Clue Title</h3>
+        <p class="modal-summary" id="modal-clue-summary">Clue short summary</p>
+
+        <!-- Terminal / Log View Box -->
+        <div class="terminal-box">
+          <div class="terminal-bar">
+            <span class="term-circle red"></span>
+            <span class="term-circle yellow"></span>
+            <span class="term-circle green"></span>
+            <span class="term-filename" id="modal-terminal-header">evidence_stream.log</span>
+          </div>
+          <pre class="terminal-content" id="modal-clue-content">
+            <!-- Raw content inserted here -->
+          </pre>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <span class="modal-status-text" id="modal-status-text">✓ Analyzed & Recorded into Case File</span>
+        <button class="btn btn-secondary" onclick="closeClueModal()">Close File</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: FINAL CASE RESOLUTION / VERDICT ================= -->
+  <div class="modal-backdrop" id="verdict-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-window verdict-window">
+      <div class="verdict-banner" id="verdict-banner">
+        <span class="verdict-icon" id="verdict-icon">🎯</span>
+        <h2 class="verdict-status-title" id="verdict-status-title">CASE SOLVED!</h2>
+      </div>
+
+      <div class="modal-body">
+        <div class="verdict-culprit-card" id="verdict-culprit-card">
+          <!-- Populated by app.js -->
+        </div>
+
+        <div class="verdict-explanation-section">
+          <h4 class="verdict-subheading">Forensic Evidence Breakdown</h4>
+          <div class="breakdown-list" id="verdict-breakdown-list">
+            <!-- Breakdown clues populated by app.js -->
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer verdict-footer">
+        <button class="btn btn-secondary" id="retry-btn" onclick="closeVerdictModal()">Re-inspect Evidence</button>
+        <button class="btn btn-primary" onclick="resetCase()">Reset Case & Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: GUIDED INVESTIGATION / TUTORIAL ================= -->
+  <div class="modal-backdrop open" id="tutorial-modal" role="dialog" aria-modal="true" aria-labelledby="tutorial-step-title">
+    <div class="modal-window tutorial-window">
+      
+      <!-- Tutorial Header with Progress Stepper -->
+      <div class="tutorial-header">
+        <div class="tutorial-top-row">
+          <div class="badge-terminal">
+            <span class="status-dot"></span> GUIDED INVESTIGATION • DETECTIVE BRIEFING
+          </div>
+          <button class="modal-close-btn" onclick="closeTutorial()" aria-label="Skip Tutorial" title="Skip Tutorial">✕</button>
+        </div>
+
+        <div class="stepper-dots" id="tutorial-stepper-dots">
+          <div class="step-dot active" data-step="1">
+            <span class="step-num">1</span>
+            <span class="step-text">Read Case</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step-dot" data-step="2">
+            <span class="step-num">2</span>
+            <span class="step-text">Suspects</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step-dot" data-step="3">
+            <span class="step-num">3</span>
+            <span class="step-text">Evidence</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step-dot" data-step="4">
+            <span class="step-num">4</span>
+            <span class="step-text">Accuse</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tutorial Step Dynamic Body -->
+      <div class="modal-body tutorial-body">
+        <div class="step-badge-indicator" id="tutorial-step-badge">STEP 1 OF 4</div>
+        <h2 class="tutorial-step-title" id="tutorial-step-title">Welcome Detective</h2>
+        <p class="tutorial-instruction-text" id="tutorial-instruction-text">
+          <!-- Text dynamically inserted -->
+        </p>
+
+        <!-- Preview Card container for this step -->
+        <div class="tutorial-preview-card" id="tutorial-preview-card">
+          <!-- Dynamically populated visual context -->
+        </div>
+      </div>
+
+      <!-- Tutorial Footer with Back, Next, Start buttons -->
+      <div class="modal-footer tutorial-footer">
+        <button class="btn btn-secondary" id="tutorial-back-btn" onclick="prevTutorialStep()">← Back</button>
+        <div class="tutorial-footer-actions">
+          <button class="btn-text-link" onclick="closeTutorial()">Skip to Case</button>
+          <button class="btn btn-primary" id="tutorial-next-btn" onclick="nextTutorialStep()">Next →</button>
+          <button class="btn btn-success" id="tutorial-start-btn" onclick="startInvestigation()" style="display: none;">
+            🚀 Start Investigation
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MODAL: CASE STATUS & MISSION HUD ================= -->
+  <div class="modal-backdrop" id="status-modal" role="dialog" aria-modal="true" aria-labelledby="status-modal-title">
+    <div class="modal-window status-window">
+      <div class="modal-header">
+        <div class="modal-badge-row">
+          <span class="tag-pill tag-cyan">MISSION STATUS</span>
+          <span class="modal-clue-id">LIVE TELEMETRY</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeStatusModal()" aria-label="Close modal">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="status-hud-header">
+          <div class="status-icon-ring">
+            <span class="pulse-dot-large"></span>
+          </div>
+          <div>
+            <h3 class="modal-title" id="status-modal-title">Investigation Active</h3>
+            <p class="modal-summary" id="status-modal-subtitle">Apex Financial Data Breach • Incident #CASE-204</p>
+          </div>
+        </div>
+
+        <div class="hud-metrics-grid">
+          <div class="hud-metric-box">
+            <span class="metric-label">CLUES EXAMINED</span>
+            <span class="metric-value highlight-cyan" id="hud-clues-count">0 / 6</span>
+          </div>
+          <div class="hud-metric-box">
+            <span class="metric-label">SUSPECTS UNDER AUDIT</span>
+            <span class="metric-value" id="hud-suspects-count">3 Employees</span>
+          </div>
+          <div class="hud-metric-box">
+            <span class="metric-label">CASE STATUS</span>
+            <span class="metric-value" style="color: #34d399;" id="hud-case-state">IN PROGRESS</span>
+          </div>
+        </div>
+
+        <div class="hud-mission-objective">
+          <span class="objective-label">CURRENT OBJECTIVE</span>
+          <p class="objective-text">
+            Inspect all 6 forensic clues in the <strong>Evidence & Chats</strong> tab (MAC addresses, Slack & Dark Web chats, and power logs) to identify the rogue insider and clear innocent employees.
+          </p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="resetCase()">🔄 Restart Case</button>
+        <button class="btn btn-primary" onclick="closeStatusModal()">Return to Investigation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include Scripts -->
+  <script src="caseData.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
